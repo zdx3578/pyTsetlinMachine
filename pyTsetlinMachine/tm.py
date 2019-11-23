@@ -57,7 +57,7 @@ array_1d_int = np.ctypeslib.ndpointer(
 # Multiclass Tsetlin Machine
 
 _lib.CreateMultiClassTsetlinMachine.restype = mc_ctm_pointer                    
-_lib.CreateMultiClassTsetlinMachine.argtypes = [C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_double, C.c_int] 
+_lib.CreateMultiClassTsetlinMachine.argtypes = [C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_double, C.c_int]
 
 _lib.mc_tm_destroy.restype = None                      
 _lib.mc_tm_destroy.argtypes = [mc_ctm_pointer] 
@@ -92,7 +92,7 @@ _lib.mc_tm_clause_configuration.argtypes = [mc_ctm_pointer, C.c_int, C.c_int, ar
 # Tsetlin Machine
 
 _lib.CreateTsetlinMachine.restype = ctm_pointer                    
-_lib.CreateTsetlinMachine.argtypes = [C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_double, C.c_int] 
+_lib.CreateTsetlinMachine.argtypes = [C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_double, C.c_int]
 
 _lib.tm_fit_regression.restype = None                      
 _lib.tm_fit_regression.argtypes = [ctm_pointer, array_1d_uint, array_1d_int, C.c_int, C.c_int] 
@@ -103,7 +103,7 @@ _lib.tm_predict_regression.argtypes = [ctm_pointer, array_1d_uint, array_1d_int,
 # Tools
 
 _lib.tm_encode.restype = None                      
-_lib.tm_encode.argtypes = [array_1d_uint, array_1d_uint, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int] 
+_lib.tm_encode.argtypes = [array_1d_uint, array_1d_uint, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int, C.c_int]
 
 # Indexed Tsetlin Machine
 
@@ -123,7 +123,7 @@ _lib.itm_fit.restype = None
 _lib.itm_fit.argtypes = [itm_pointer, array_1d_uint, array_1d_uint, C.c_int, C.c_int] 
 
 class MultiClassConvolutionalTsetlinMachine2D():
-	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True):
+	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True, stride=4):
 		self.number_of_clauses = number_of_clauses
 		self.number_of_clause_chunks = (number_of_clauses-1)/32 + 1
 		self.number_of_state_bits = number_of_state_bits
@@ -133,6 +133,8 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		self.boost_true_positive_feedback = boost_true_positive_feedback
 		self.mc_ctm = None
 		self.append_negated = append_negated
+		self.stride = stride
+		print("tm print clause,number_of_clause_chunks,T,s,DIM,stride is :", number_of_clauses, self.number_of_clause_chunks, T, s, patch_dim, self.stride)
 
 	def __del__(self):
 		if self.mc_ctm != None:
@@ -156,8 +158,9 @@ class MultiClassConvolutionalTsetlinMachine2D():
 			else:
 				self.number_of_features = int(self.patch_dim[0]*self.patch_dim[1]*self.dim_z + (self.dim_x - self.patch_dim[0]) + (self.dim_y - self.patch_dim[1]))
 
-			self.number_of_patches = int((self.dim_x - self.patch_dim[0] + 1)*(self.dim_y - self.patch_dim[1] + 1))
+			self.number_of_patches = int(( (self.dim_x - self.patch_dim[0]) /self.stride + 1)*( (self.dim_y - self.patch_dim[1]) /self.stride + 1))
 			self.number_of_ta_chunks = int((self.number_of_features-1)/32 + 1)
+			print("tm print self.number_of_patches is %d  number_of_features %d ,number ta chunks %d:", self.number_of_patches, self.number_of_features, self.number_of_ta_chunks)
 			self.mc_ctm = _lib.CreateMultiClassTsetlinMachine(self.number_of_classes, self.number_of_clauses, self.number_of_features, self.number_of_patches, self.number_of_ta_chunks, self.number_of_state_bits, self.T, self.s, self.boost_true_positive_feedback)
 		elif incremental == False:
 			_lib.mc_tm_destroy(self.mc_ctm)
@@ -169,11 +172,13 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		Ym = np.ascontiguousarray(Y).astype(np.uint32)
 
 		if self.append_negated:
-			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 1)
+			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 1 ,self.stride)
 		else:
-			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 0)
-		
+			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 0 ,self.stride)
+		print("encoded")
+		print("fitting")
 		_lib.mc_tm_fit(self.mc_ctm, self.encoded_X, Ym, number_of_examples, epochs)
+		print("fitted")
 
 		return
 
@@ -185,9 +190,9 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
 
 		if self.append_negated:
-			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 1)
+			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 1 ,self.stride)
 		else:
-			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 0)
+			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 0 ,self.stride)
 	
 		Y = np.ascontiguousarray(np.zeros(number_of_examples, dtype=np.uint32))
 

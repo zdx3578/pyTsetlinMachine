@@ -28,11 +28,13 @@ https://arxiv.org/abs/1905.09688
 #include <stdio.h>
 #include <string.h>
 
-void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples, int dim_x, int dim_y, int dim_z, int patch_dim_x, int patch_dim_y, int append_negated)
+void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples, int dim_x, int dim_y, int dim_z, int patch_dim_x, int patch_dim_y, int append_negated ,int stride)
+
 {
 	int global_number_of_features = dim_x * dim_y * dim_z;
 	int number_of_features = patch_dim_x * patch_dim_y * dim_z + (dim_x - patch_dim_x) + (dim_y - patch_dim_y);
-	int number_of_patches = (dim_x - patch_dim_x + 1) * (dim_y - patch_dim_y + 1);
+	int number_of_patches = ((dim_x - patch_dim_x)/stride + 1) * ((dim_y - patch_dim_y)/stride + 1);
+	printf("encode number_of_patches is  %d \n",number_of_patches) ;
 
 	int number_of_ta_chunks;
 	if (append_negated) {
@@ -55,8 +57,8 @@ void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples,
 	for (int i = 0; i < number_of_examples; ++i) {
 		int patch_nr = 0;
 		// Produce the patches of the current image
-		for (int y = 0; y < dim_y - patch_dim_y + 1; ++y) {
-			for (int x = 0; x < dim_x - patch_dim_x + 1; ++x) {
+		for (int y = 0; y < dim_y - patch_dim_y + 1;  y+=stride) {
+			for (int x = 0; x < dim_x - patch_dim_x + 1;  x+=stride) {
 				Xi = &X[input_pos];
 				encoded_Xi = &encoded_X[encoded_pos];
 

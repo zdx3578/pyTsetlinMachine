@@ -9,7 +9,8 @@ from keras.datasets import mnist
 X_train = np.where(X_train >= 75, 1, 0) 
 X_test = np.where(X_test >= 75, 1, 0) 
 
-tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (10, 10))
+#tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (7, 7))
+tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (10, 10),stride=3)
 
 print("\nAccuracy over 40 epochs:\n")
 for i in range(40):

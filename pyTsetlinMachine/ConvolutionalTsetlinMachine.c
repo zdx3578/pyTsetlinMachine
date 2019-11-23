@@ -67,6 +67,7 @@ struct TsetlinMachine *CreateTsetlinMachine(int number_of_clauses, int number_of
 	tm->clause_patch = (unsigned int *)malloc(sizeof(unsigned int) * number_of_clauses);
 
 	tm->feedback_to_clauses = (int *)malloc(sizeof(int) * tm->number_of_clause_chunks);
+	printf("Tsetlinmachine number_of_clause_chunks is  %d;number_of_patches is : %d; number_of_ta_chunks is %d \n",tm->number_of_clause_chunks, tm->number_of_patches, number_of_ta_chunks) ;
 
 	if (((number_of_features) % 32) != 0) {
 		tm->filter  = (~(0xffffffff << ((number_of_features) % 32)));
