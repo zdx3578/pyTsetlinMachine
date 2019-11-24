@@ -198,8 +198,8 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		#X1=X[0,0:2,0:2,0]
 		#X = X.reshape(X.shape[0], 32 * 32 )
 
-		X2 = clip_bits(X, self.unpackbit*self.unpackbit)
-		Xm = np.ascontiguousarray(X2.flatten()).astype(np.uint32)
+		#X2 = clip_bits(X, self.unpackbit*self.unpackbit)
+		Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
 		Ym = np.ascontiguousarray(Y).astype(np.uint32)
 		print("Shape", X2.shape)
 		#self.unpackbit=(self.unpackbit)/2
@@ -220,7 +220,7 @@ class MultiClassConvolutionalTsetlinMachine2D():
 
 		self.encoded_X = np.ascontiguousarray(np.empty(int(number_of_examples * self.number_of_patches * self.number_of_ta_chunks), dtype=np.uint32))
 		#X = X.reshape(X.shape[0], 32 * 32 * 3)
-		X = clip_bits(X, self.unpackbit*self.unpackbit)
+		#X = clip_bits(X, self.unpackbit*self.unpackbit)
 		Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
 
 
