@@ -202,7 +202,7 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		#X2 = clip_bits(X, self.unpackbit*self.unpackbit)
 		Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
 		Ym = np.ascontiguousarray(Y).astype(np.uint32)
-		print("Shape", X2.shape)
+		print("Shape", Xm.shape)
 		#self.unpackbit=(self.unpackbit)/2
 		print(datetime.datetime.now())
 		if self.append_negated:

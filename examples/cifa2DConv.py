@@ -45,7 +45,7 @@ print(datetime.datetime.now())
 # 	break
 
 #tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (7, 7))
-tm = MultiClassConvolutionalTsetlinMachine2D(12000, 250, 12.0, (8, 8),stride=1,unpackbit=unpackbit/2)
+tm = MultiClassConvolutionalTsetlinMachine2D(12000, 250, 12.0, (8, 8),stride=3,unpackbit=unpackbit/2)
 
 print("\nAccuracy over 40 epochs:\n")
 for i in range(40):
@@ -56,8 +56,8 @@ for i in range(40):
 	print(datetime.datetime.now())
 	result = 100*(tm.predict(X_test) == Y_test).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
-
+	print(datetime.datetime.now())
 	result2 = 100 * (tm.predict(X_train) == Y_train).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i + 1, result2, stop - start))
-
+	print(datetime.datetime.now())
 	print()
