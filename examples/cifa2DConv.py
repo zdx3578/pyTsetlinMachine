@@ -36,17 +36,16 @@ def clip_bits(X_train_rgb, num):
 	X_b = np.stack([convert_img(X_train,num) for X_train in X_train_rgb], axis=0)
 	return X_b
 
-
-X_train = clip_bits(X_train, self.unpackbit*self.unpackbit)
-X_test = clip_bits(X_test, self.unpackbit*self.unpackbit)
-
-
 unpackbit=4
+print(datetime.datetime.now())
+X_train = clip_bits(X_train, unpackbit)
+X_test = clip_bits(X_test, unpackbit)
+print(datetime.datetime.now())
 # if unpackbit%2!=0:
 # 	break
 
 #tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (7, 7))
-tm = MultiClassConvolutionalTsetlinMachine2D(8000, 250, 12.0, (8, 8),stride=1,unpackbit=unpackbit/2)
+tm = MultiClassConvolutionalTsetlinMachine2D(12000, 250, 12.0, (8, 8),stride=1,unpackbit=unpackbit/2)
 
 print("\nAccuracy over 40 epochs:\n")
 for i in range(40):
@@ -61,4 +60,4 @@ for i in range(40):
 	result2 = 100 * (tm.predict(X_train) == Y_train).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i + 1, result2, stop - start))
 
- 	print()
+	print()

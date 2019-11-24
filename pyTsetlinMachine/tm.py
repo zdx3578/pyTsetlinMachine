@@ -24,6 +24,7 @@
 import numpy as np
 import ctypes as C
 import os
+import datetime
 
 this_dir, this_filename = os.path.split(__file__)
 _lib = np.ctypeslib.load_library('libTM', os.path.join(this_dir, ".."))    
@@ -203,14 +204,16 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		Ym = np.ascontiguousarray(Y).astype(np.uint32)
 		print("Shape", X2.shape)
 		#self.unpackbit=(self.unpackbit)/2
-
+		print(datetime.datetime.now())
 		if self.append_negated:
 			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 1 ,self.stride, self.unpackbit)
 		else:
 			_lib.tm_encode(Xm, self.encoded_X, number_of_examples, self.dim_x, self.dim_y, self.dim_z, self.patch_dim[0], self.patch_dim[1], 0 ,self.stride, self.unpackbit)
+		print(datetime.datetime.now())
 		print("encoded")
 		print("fitting")
 		_lib.mc_tm_fit(self.mc_ctm, self.encoded_X, Ym, number_of_examples, epochs)
+		print(datetime.datetime.now())
 		print("fitted")
 
 		return
