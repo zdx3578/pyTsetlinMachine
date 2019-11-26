@@ -17,12 +17,12 @@ import datetime
 Y_train=Y_train.reshape(Y_train.shape[0])
 Y_test=Y_test.reshape(Y_test.shape[0])
 
-unpackbit=4
+unpackbit=9
 # if unpackbit%2!=0:
 # 	break
 
 #tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (7, 7))
-tm = MultiClassConvolutionalTsetlinMachine2D(6000, 200, 12.0, (11, 11),stride=3,unpackbit=unpackbit/2)
+tm = MultiClassConvolutionalTsetlinMachine2D(28000, 550, 8.0, (12, 12), number_of_state_bits=9,stride=4,unpackbit=unpackbit/3)
 
 print("\nAccuracy over 40 epochs:\n")
 for i in range(40):
@@ -34,6 +34,6 @@ for i in range(40):
 	result = 100*(tm.predict(X_test) == Y_test).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
 
-	result2 = 100 * (tm.predict(X_train) == Y_train).mean()
-	print("#%d Accuracy: %.2f%% (%.2fs)" % (i + 1, result2, stop - start))
+	#result2 = 100 * (tm.predict(X_train) == Y_train).mean()
+	#print("#%d Accuracy: %.2f%% (%.2fs)" % (i + 1, result2, stop - start))
 	print()

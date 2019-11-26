@@ -132,8 +132,8 @@ def clip_bits(X_train_rgb, num):
 
 			for x in x_0.T:
 				x_ = x.reshape(len(x), 1).astype(dtype=np.uint8)  # reshape to 1d array
-				x_1 = np.unpackbits(x_, axis=1)[:, :num]
-				x_2 = np.vstack([x.reshape(2, 2) for x in x_1])
+				x_1 = np.unpackbits(x_, axis=1, count=9)
+				x_2 = np.vstack([x.reshape(3, 3) for x in x_1])
 				data_x.append(x_2)
 				x_3 = np.hstack(data_x)  # conver 2d to 2d bit
 			return x_3
@@ -159,7 +159,7 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		self.append_negated = append_negated
 		self.stride = stride
 		self.unpackbit = int(unpackbit)
-		print("tm print clause,number_of_clause_chunks,T,s,DIM,stride,,unpackbit-self.unpackbit/2 is :", number_of_clauses, self.number_of_clause_chunks, T, s, patch_dim, self.stride, self.unpackbit,self.unpackbit)
+		print("tm print clause,number_of_clause_chunks,T,s,DIM,stride,,unpackbit-self.unpackbit/2, number_of_state_bits is :", number_of_clauses, self.number_of_clause_chunks, T, s, patch_dim, self.stride, self.unpackbit,self.unpackbit,self.number_of_state_bits)
 
 	def __del__(self):
 		if self.mc_ctm != None:
