@@ -34,7 +34,7 @@ void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples,
 	int global_number_of_features = dim_x * dim_y * dim_z*unpackbit*unpackbit;
 	int number_of_features = patch_dim_x * patch_dim_y * dim_z*unpackbit*unpackbit + (dim_x - patch_dim_x) + (dim_y - patch_dim_y);
 	int number_of_patches = ((dim_x - patch_dim_x)/stride + 1) * ((dim_y - patch_dim_y)/stride + 1);
-	printf("encode number_of_patches is  %d \n",number_of_patches) ;
+	//printf("encode number_of_patches is  %d \n",number_of_patches) ;
 
 	int number_of_ta_chunks;
 	if (append_negated) {
@@ -98,9 +98,9 @@ void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples,
 				} 
 
 				// Encode patch content into feature vector
-				for (int p_y = 0; p_y < patch_dim_y; p_y+=1) {
+				for (int z = 0; z < dim_z; ++z) {
 					for (int p_x = 0; p_x < patch_dim_x; p_x+=1) {
-						for (int z = 0; z < dim_z; ++z) {
+						for (int p_y = 0; p_y < patch_dim_y; p_y+=1) {
 							int image_pos = (y + p_y)*dim_x*dim_z + (x + p_x)*dim_z + z;
 							int patch_pos = (dim_y - patch_dim_y) + (dim_x - patch_dim_x) + p_y * patch_dim_x * dim_z + p_x * dim_z + z;
 
