@@ -143,7 +143,21 @@ def clip_bits(X_train_rgb, num):
 	X_b = np.stack([convert_img(X_train,num) for X_train in X_train_rgb], axis=0)
 	return X_b
 
-
+def clip_bits2(X_train_rgb, num):
+	l_0 = []
+	for X_train in X_train_rgb:  # n 32 32 3
+		l_1 = []
+		for X in X_train.T: # 32 32 3
+			l_2 = []
+			for x in X.T: # 32 32
+				x_ = x.reshape(len(x), 1).astype(dtype=np.uint8)
+				x_1 = np.unpackbits(x_, axis=1, count=-4)
+				l_2.append(x_1)
+			x_2 = np.stack(l_2, axis=0)
+			l_1.append(x_2)
+		l_0.append(np.concatenate(l_1,axis=2))
+	data_x = np.stack(l_0, axis=0)
+	return data_x
 
 
 class MultiClassConvolutionalTsetlinMachine2D():
@@ -193,12 +207,15 @@ class MultiClassConvolutionalTsetlinMachine2D():
 
 		self.encoded_X = np.ascontiguousarray(np.empty(int(number_of_examples * self.number_of_patches * self.number_of_ta_chunks), dtype=np.uint32))
 
-		#Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
-		#X=X[0,0:2,0:2,0]
-		#X1=X[0,0:2,0:2,0]
-		#X = X.reshape(X.shape[0], 32 * 32 )
 
 		X2 = clip_bits(X, self.unpackbit*self.unpackbit)
+
+		# d = []
+		# for x in X2:
+		# 	d.append(x.flatten('F'))
+
+		# Xm = np.ascontiguousarray(np.concatenate(d)).astype(np.uint32)
+
 		Xm = np.ascontiguousarray(X2.flatten()).astype(np.uint32)
 		Ym = np.ascontiguousarray(Y).astype(np.uint32)
 		print("Shape", X2.shape)
@@ -219,9 +236,19 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		number_of_examples = X.shape[0]
 
 		self.encoded_X = np.ascontiguousarray(np.empty(int(number_of_examples * self.number_of_patches * self.number_of_ta_chunks), dtype=np.uint32))
-		#X = X.reshape(X.shape[0], 32 * 32 * 3)
+
+
 		X = clip_bits(X, self.unpackbit*self.unpackbit)
 		Xm = np.ascontiguousarray(X.flatten()).astype(np.uint32)
+
+
+		# X2 = clip_bits2(X, self.unpackbit*self.unpackbit)
+		#
+		# d = []
+		# for x in X2:
+		# 	d.append(x.flatten('F'))
+		#
+		# Xm = np.ascontiguousarray(np.concatenate(d)).astype(np.uint32)
 
 
 		if self.append_negated:

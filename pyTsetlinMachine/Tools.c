@@ -98,9 +98,17 @@ void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples,
 				} 
 
 				// Encode patch content into feature vector
-				for (int z = 0; z < dim_z; ++z) {
-					for (int p_x = 0; p_x < patch_dim_x; p_x+=1) {
-						for (int p_y = 0; p_y < patch_dim_y; p_y+=1) {
+//				for (int p_y = 0; p_y < patch_dim_y; p_y+=1) {
+//					for (int p_x = 0; p_x < patch_dim_x; p_x+=1) {
+//						for (int z = 0; z < dim_z; ++z) {
+//							int image_pos = dim_x*dim_y*dim_z +  (y + p_y)*dim_x + x + p_x;
+//							int patch_pos =  (dim_y - patch_dim_y) + (dim_x - patch_dim_x) + dim_x*dim_y*dim_z + p_y*patch_dim_x +p_x;
+
+
+
+				for (int p_y = 0; p_y < patch_dim_y; ++p_y) {
+					for (int p_x = 0; p_x < patch_dim_x; ++p_x) {
+						for (int z = 0; z < dim_z; ++z) {
 							int image_pos = (y + p_y)*dim_x*dim_z + (x + p_x)*dim_z + z;
 							int patch_pos = (dim_y - patch_dim_y) + (dim_x - patch_dim_x) + p_y * patch_dim_x * dim_z + p_x * dim_z + z;
 
@@ -121,5 +129,6 @@ void tm_encode(unsigned int *X, unsigned int *encoded_X, int number_of_examples,
 			}
 		}
 		input_pos += input_step_size;
+		//printf("encode number_of_example is  %d \n",i) ;
 	}
 }
