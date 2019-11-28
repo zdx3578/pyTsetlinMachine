@@ -13,14 +13,13 @@ import datetime
 
 Y_train=Y_train.reshape(Y_train.shape[0])
 Y_test=Y_test.reshape(Y_test.shape[0])
-
 train_filter = np.where((Y_train == 0 ) | (Y_train == 1))
 test_filter = np.where((Y_test == 0) | (Y_test == 1))
 
 X_train, Y_train = X_train[train_filter], Y_train[train_filter]
 X_test, Y_test = X_test[test_filter], Y_test[test_filter]
 
-X_train2 = np.dot(X_train[...,:3], [0.2989, 0.5870, 0.1140]).astype(np.uint32)
+X_train = np.dot(X_train[...,:3], [0.2989, 0.5870, 0.1140]).astype(np.uint32)
 X_test = np.dot(X_test[...,:3], [0.2989, 0.5870, 0.1140]).astype(np.uint32)
 
 unpackbit=4

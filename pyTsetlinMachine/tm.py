@@ -125,7 +125,7 @@ _lib.itm_fit.argtypes = [itm_pointer, array_1d_uint, array_1d_uint, C.c_int, C.c
 # def clip_bits(X_train, num):
 # 	return np.hstack([np.unpackbits(x.reshape(len(x), 1).astype(dtype=np.uint8), axis=1)[:, :num] for x in X_train.T])
 
-def clip_bits(X_train_rgb, num):
+def clip_bits1(X_train_rgb, num):
 	def convert_img(X_train,num):
 		def n2b(x_0):
 			data_x = []
@@ -142,6 +142,27 @@ def clip_bits(X_train_rgb, num):
 
 	X_b = np.stack([convert_img(X_train,num) for X_train in X_train_rgb], axis=0)
 	return X_b
+
+
+def clip_bits(X_train_rgb, num):
+	def convert_img(X_train,num):
+		# def n2b(x_0):
+		data_x = []
+
+		for x in X_train.T:
+			x_ = x.reshape(len(x), 1).astype(dtype=np.uint8)  # reshape to 1d array
+			x_1 = np.unpackbits(x_, axis=1, count=-4)
+			x_2 = np.vstack([x.reshape(2, 2) for x in x_1])
+			data_x.append(x_2)
+			x_3 = np.hstack(data_x)  # conver 2d to 2d bit
+		return x_3
+		# x_4 = np.stack([n2b(x) for x in X_train.T], axis=2)  # apply to rgb img
+		# return x_4
+
+	X_b = np.stack([convert_img(X_train,num) for X_train in X_train_rgb], axis=0)
+	return X_b
+
+
 
 def clip_bits2(X_train_rgb, num):
 	l_0 = []
