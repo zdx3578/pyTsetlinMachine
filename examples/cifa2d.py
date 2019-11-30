@@ -11,6 +11,17 @@ Y_train=Y_train.reshape(Y_train.shape[0])
 Y_test=Y_test.reshape(Y_test.shape[0])
 
 
+
+
+
+# X_train = X_train[0:200]
+# Y_train = Y_train[0:200]
+#
+# X_test = X_test[0:200]
+# Y_test = Y_test[0:200]
+
+
+
 # cifa10encode = 12 #  12 is 32 32 12;  3 is   64 64 3;;
 # bit=1
 
@@ -26,7 +37,7 @@ for i in range(40):
 	print(datetime.datetime.now())
 	tm.fit(X_train, Y_train, epochs=1, incremental=True)
 	stop = time()
-	print(datetime.datetime.now())
+	print(datetime.datetime.now(),"predict")
 	result = 100*(tm.predict(X_test) == Y_test).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
 
