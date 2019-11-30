@@ -84,6 +84,8 @@ struct TsetlinMachine *CreateTsetlinMachine(int number_of_clauses, int number_of
 	
 	tm_initialize(tm);
 
+	printf("Tsetlinmachine number_of_clause_chunks is  %d;number_of_patches is : %d; number_of_ta_chunks is %d; number_of_features %d \n",tm->number_of_clause_chunks, tm->number_of_patches, number_of_ta_chunks, number_of_features ) ;
+
 	return tm;
 }
 
