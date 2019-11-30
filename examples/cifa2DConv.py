@@ -27,7 +27,7 @@ unpackbit=4
 
 #tm = MultiClassConvolutionalTsetlinMachine2D(8000, 200, 10.0, (7, 7))
 #tm = MultiClassConvolutionalTsetlinMachine2D(1000, 25*100, 10.0, (10, 10), weighted_clauses=True)
-cifa10encode = 3 #  12 is 32 32 12;  3 is   64 64 3;;
+cifa10encode = 12 #  12 is 32 32 12;  3 is   64 64 3;;
 tm = MultiClassConvolutionalTsetlinMachine2D(1000, 25*100, 6.0, (10,10), number_of_state_bits=8,append_negated=True,stride=4,unpackbit=unpackbit/2,weighted_clauses=True,cifa10encode=cifa10encode)
 print(datetime.datetime.now())
 
@@ -37,7 +37,7 @@ for i in range(40):
 	print(datetime.datetime.now())
 	tm.fit(X_train, Y_train, epochs=1, incremental=True)
 	stop = time()
-	#print(datetime.datetime.now())
+	print(datetime.datetime.now())
 	result = 100*(tm.predict(X_test) == Y_test).mean()
 	print("#%d Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
 
