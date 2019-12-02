@@ -21,14 +21,13 @@ Y_test=Y_test.reshape(Y_test.shape[0])
 # Y_test = Y_test[0:200]
 
 
+cifa10encode = 12 #  12 is 32 32 12;  3 is   64 64 3;;
+bit=1
 
-# cifa10encode = 12 #  12 is 32 32 12;  3 is   64 64 3;;
-# bit=1
+#cifa10encode = 3 #  12 is 32 32 12;  3 is   64 64 3;;
+#bit=2
 
-cifa10encode = 3 #  12 is 32 32 12;  3 is   64 64 3;;
-bit=2
-
-tm = MultiClassConvolutionalTsetlinMachine2D(8000, 25*100, 6.0, (10*bit,10*bit),weighted_clauses=True,cifa10encode=cifa10encode)
+tm = MultiClassConvolutionalTsetlinMachine2D(12000, 25*100, 6.0, (10*bit,10*bit),weighted_clauses=True,cifa10encode=cifa10encode)
 print(datetime.datetime.now())
 
 print("\nAccuracy over 20 epochs:\n")

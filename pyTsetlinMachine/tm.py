@@ -186,7 +186,7 @@ def clip_bits2(X_train_rgb, num):
 
 
 class MultiClassConvolutionalTsetlinMachine2D():
-	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True, weighted_clauses=False, s_range=False, cifa10encode=12):
+	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True, weighted_clauses=True, s_range=False, cifa10encode=12):
 		self.number_of_clauses = number_of_clauses
 		self.number_of_clause_chunks = (number_of_clauses-1)/32 + 1
 		self.number_of_state_bits = number_of_state_bits
@@ -202,6 +202,10 @@ class MultiClassConvolutionalTsetlinMachine2D():
 			self.s_range = s_range
 		else:
 			self.s_range = s
+
+		print(
+			"tm print clause,number_of_clause_chunks,T,s,DIM, number_of_state_bits append_neg,weighted_clauses is :",
+			number_of_clauses, self.number_of_clause_chunks, T, s, patch_dim, self.number_of_state_bits, append_negated,weighted_clauses)
 
 	def __del__(self):
 		if self.mc_ctm != None:
