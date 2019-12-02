@@ -12,22 +12,29 @@ Y_test=Y_test.reshape(Y_test.shape[0])
 
 
 
+train_filter = np.where((Y_train == 0 ) | (Y_train == 1))
+test_filter = np.where((Y_test == 0) | (Y_test == 1))
+X_train, Y_train = X_train[train_filter], Y_train[train_filter]
+X_test, Y_test = X_test[test_filter], Y_test[test_filter]
 
 
-# X_train = X_train[0:200]
-# Y_train = Y_train[0:200]
-#
-# X_test = X_test[0:200]
-# Y_test = Y_test[0:200]
+
+X_train = X_train[0:200]
+Y_train = Y_train[0:200]
+
+X_test = X_test[0:200]
+Y_test = Y_test[0:200]
 
 
 cifa10encode = 12 #  12 is 32 32 12;  3 is   64 64 3;;
 bit=1
 
+num=2 ## unpackbit count= -num
+
 #cifa10encode = 3 #  12 is 32 32 12;  3 is   64 64 3;;
 #bit=2
 
-tm = MultiClassConvolutionalTsetlinMachine2D(12000, 25*100, 6.0, (10*bit,10*bit),weighted_clauses=True,cifa10encode=cifa10encode)
+tm = MultiClassConvolutionalTsetlinMachine2D(12000, 25*100, 6.0, (10*bit,10*bit),weighted_clauses=True,cifa10encode=cifa10encode,num = num)
 print(datetime.datetime.now())
 
 print("\nAccuracy over 20 epochs:\n")

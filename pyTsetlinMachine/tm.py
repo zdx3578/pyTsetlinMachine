@@ -174,7 +174,7 @@ def clip_bits2(X_train_rgb, num):
 			l_2 = []
 			for x in X.T: # 32 32
 				x_ = x.reshape(len(x), 1).astype(dtype=np.uint8)
-				x_1 = np.unpackbits(x_, axis=1, count=-4)
+				x_1 = np.unpackbits(x_, axis=1, count=-num)
 				l_2.append(x_1)
 			x_2 = np.stack(l_2, axis=0)
 			l_1.append(x_2)
@@ -186,7 +186,7 @@ def clip_bits2(X_train_rgb, num):
 
 
 class MultiClassConvolutionalTsetlinMachine2D():
-	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True, weighted_clauses=True, s_range=False, cifa10encode=12):
+	def __init__(self, number_of_clauses, T, s, patch_dim, boost_true_positive_feedback=1, number_of_state_bits=8, append_negated=True, weighted_clauses=True, s_range=False, cifa10encode=12, num=2):
 		self.number_of_clauses = number_of_clauses
 		self.number_of_clause_chunks = (number_of_clauses-1)/32 + 1
 		self.number_of_state_bits = number_of_state_bits
@@ -198,6 +198,7 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		self.append_negated = append_negated
 		self.weighted_clauses = weighted_clauses
 		self.cifa10encode = cifa10encode
+		self.num = num
 		if s_range:
 			self.s_range = s_range
 		else:
@@ -215,9 +216,9 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		number_of_examples = X.shape[0]
 
 		if self.cifa10encode == 12:
-			X = clip_bits2(X, 4)
+			X = clip_bits2(X, self.num)
 		else :
-			X = clip_bits(X, 4)
+			X = clip_bits(X, self.num)
 		print("Shape", X.shape)
 
 
@@ -261,9 +262,9 @@ class MultiClassConvolutionalTsetlinMachine2D():
 		number_of_examples = X.shape[0]
 
 		if self.cifa10encode == 12:
-			X = clip_bits2(X, 4)
+			X = clip_bits2(X, self.num)
 		else :
-			X = clip_bits(X, 4)
+			X = clip_bits(X, self.num)
 		print("Shape", X.shape)
 
 		
