@@ -265,7 +265,7 @@ class MultiClassConvolutionalTsetlinMachine2D():
 			X = clip_bits2(X, self.num)
 		else :
 			X = clip_bits(X, self.num)
-		print("Shape", X.shape)
+		#print("Shape", X.shape)
 
 		
 		self.encoded_X = np.ascontiguousarray(np.empty(int(number_of_examples * self.number_of_patches * self.number_of_ta_chunks), dtype=np.uint32))
