@@ -35,13 +35,12 @@ for i in range(X_test.shape[0]):
 
 
 
+X_train2 = X_train[0:2000]
+Y_train2 = Y_train[0:2000]
 
 
 
-
-
-
-tm = MultiClassConvolutionalTsetlinMachine2D(12000, 150*100, 4, (4, 4), weighted_clauses=True)
+tm = MultiClassConvolutionalTsetlinMachine2D(8000, 100*100, 3.6, (4, 4), weighted_clauses=True)
 
 print("\nAccuracy over 20 epochs:\n")
 for i in range(20):
@@ -51,4 +50,6 @@ for i in range(20):
 	
 	result = 100*(tm.predict(X_test) == Y_test).mean()
 	
-	print("#%d Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
+	print("#%d test  Accuracy: %.2f%% (%.2fs)" % (i+1, result, stop-start))
+	result2 = 100*(tm.predict(X_train2) == Y_train2).mean()
+	print("#%d train  Accuracy: %.2f%% (%.2fs)" % (i+1, result2, stop-start))	
