@@ -18,11 +18,11 @@ from keras.datasets import *
 Y_train=Y_train.reshape(Y_train.shape[0])
 Y_test=Y_test.reshape(Y_test.shape[0])
 
-train_filter = np.where((Y_train == 0 ) | (Y_train == 1))
-test_filter = np.where((Y_test == 0) | (Y_test == 1))
-X_train, Y_train = X_train[train_filter], Y_train[train_filter]
-X_test, Y_test = X_test[test_filter], Y_test[test_filter]
-print(" 2 class train ")
+#train_filter = np.where((Y_train == 0 ) | (Y_train == 1))
+#test_filter = np.where((Y_test == 0) | (Y_test == 1))
+#X_train, Y_train = X_train[train_filter], Y_train[train_filter]
+#X_test, Y_test = X_test[test_filter], Y_test[test_filter]
+#print(" 2 class train ")
 
 for i in range(X_train.shape[0]):
 	for j in range(X_train.shape[3]):
@@ -40,10 +40,10 @@ Y_train2 = Y_train[0:2000]
 
 
 
-tm = MultiClassConvolutionalTsetlinMachine2D(8000, 100*100, 3.6, (4, 4), weighted_clauses=True)
+tm = MultiClassConvolutionalTsetlinMachine2D(12000, 150*100, 4, (4, 4), weighted_clauses=True)
 
-print("\nAccuracy over 20 epochs:\n")
-for i in range(20):
+print("\nAccuracy over 120 epochs:\n")
+for i in range(120):
 	start = time()
 	tm.fit(X_train, Y_train, epochs=1, incremental=True)
 	stop = time()
